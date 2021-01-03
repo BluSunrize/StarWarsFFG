@@ -19,6 +19,10 @@ export const personal_ranges = {
     value: "Extreme",
     label: "SWFFG.WeaponRangeExtreme",
   },
+  "Strategic": {
+    value: "Strategic",
+    label: "SWFFG.WeaponRangeStrategic",
+  },
 };
 
 export const vehicle_ranges = {
@@ -41,6 +45,10 @@ export const vehicle_ranges = {
   "Extreme": {
     value: "Extreme",
     label: "SWFFG.VehicleRangeExtreme",
+  },
+  "Strategic": {
+    value: "Strategic",
+    label: "SWFFG.VehicleRangeStrategic",
   },
 };
 
