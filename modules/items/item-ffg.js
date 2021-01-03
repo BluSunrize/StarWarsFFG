@@ -339,6 +339,9 @@ export class ItemFFG extends ItemBaseFFG {
         const skillLabel = "SWFFG.SkillsName" + cleanedSkillName;
         props.push(`Skill: ${game.i18n.localize(skillLabel)}`);
       }
+      if (data.hasOwnProperty("restricted")) {
+        props.push(`Restricted: ${data.restricted.value}`);
+      }
     }
 
     // Talent properties
