@@ -902,7 +902,7 @@ export class ActorSheetFFG extends ActorSheet {
     const item = this.actor.getOwnedItem(li.dataset.itemId);
 
     // limit transfer on personal weapons/armour/gear
-    if (["weapon", "armour", "gear"].includes(item.data.type)) {
+    if (["weapon", "armour", "gear", "talent"].includes(item.data.type)) {
       const dragData = {
         type: "Transfer",
         actorId: this.actor.id,
