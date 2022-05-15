@@ -599,7 +599,14 @@ export class ActorSheetFFG extends ActorSheet {
         } else if (!event.ctrlKey && event.shiftKey) {
           upgradeType = "difficulty";
         }
-        await DiceHelpers.rollSkill(this, event, upgradeType);
+        let obj = this;
+        // if this actor is a vehicle, try to find another actor to roll with
+        if (this.actor.data.type === "vehicle") {
+          let controlled = canvas.tokens.controlled.filter(token => token && token.actor && token.actor.data.type === 'character')[0]?.actor;
+          let userCharacter = game.user.character;
+          obj = controlled?.sheet || userCharacter?.sheet || obj;
+        }
+        await DiceHelpers.rollSkill(obj, event, upgradeType);
       });
 
     // Roll from [ROLL][/ROLL] tag.
