@@ -309,6 +309,8 @@
   "SWFFG.Cost": "COST:",
   "SWFFG.EnableSoakCalc": "Enable Soak Auto-Calculation",
   "SWFFG.EnableSoakCalcHint": "Enable soak auto-calculation and unload field for manual entry",
+  "SWFFG.EnableEncumCalc": "Enable Encumbrance Auto-Calculation",
+  "SWFFG.EnableEncumCalcHint": "Enable encumbrance auto-calculation and unload field for manual entry",
   "SWFFG.DefaultMedicalItemName": "Stimpacks",
   "SWFFG.MedicalItemName": "Healing Item Name",
   "SWFFG.MedicalItemNameHint": "Name of the item characters use to heal.",

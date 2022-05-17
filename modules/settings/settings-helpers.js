@@ -62,6 +62,17 @@ export default class SettingsHelpers {
       onChange: this.debouncedReload,
     });
 
+    // Enable auto Encumbrance calculation
+    game.settings.register("starwarsffg", "enableEncumCalc", {
+      name: game.i18n.localize("SWFFG.EnableEncumCalc"),
+      hint: game.i18n.localize("SWFFG.EnableEncumCalcHint"),
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean,
+      onChange: this.debouncedReload,
+    });
+
     // Enable auto Soak calculation
     game.settings.register("starwarsffg", "privateTriggers", {
       name: game.i18n.localize("SWFFG.EnablePrivateTriggers"),
