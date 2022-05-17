@@ -77,9 +77,7 @@ export class ActorFFG extends Actor {
     if (actorData.type === "minion" || actorData.type === "character") {
       this._applyModifiers.bind(this);
       this._applyModifiers(actorData);
-      if (game.settings.get("starwarsffg", "enableSoakCalc")) {
-        this._calculateDerivedValues(actorData);
-      }
+      this._calculateDerivedValues(actorData);
     } else if (actorData.type === "vehicle") {
       this._applyVehicleModifiers(actorData);
       this._calculateDerivedValues(actorData);
@@ -317,37 +315,38 @@ export class ActorFFG extends Actor {
   _calculateDerivedValues(actorData) {
     const data = actorData.system;
     const items = actorData.items;
-    var encum = 0;
 
-    // Loop through all items
-    items.forEach(function(item) {
-      try {
-        // Calculate encumbrance, only if encumbrance value exists
-        if (item.system?.encumbrance?.adjusted !== undefined || item.system?.encumbrance?.value !== undefined) {
-          if (item.type === "armour" && item?.system?.equippable?.equipped) {
-            const equippedEncumbrance = +item.system.encumbrance.adjusted - 3;
-            encum += equippedEncumbrance > 0 ? equippedEncumbrance : 0;
-          } else if (item.type === "armour" || item.type === "weapon" || item.type === "shipweapon") {
-            let count = 0;
-            if (item.system?.quantity?.value) {
-              count = item.system.quantity.value;
+    if (game.settings.get("starwarsffg", "enableEncumCalc")) {
+      var encum = 0;
+      // Loop through all items
+      items.forEach(function(item) {
+        try {
+          // Calculate encumbrance, only if encumbrance value exists
+          if (item.system?.encumbrance?.adjusted !== undefined || item.system?.encumbrance?.value !== undefined) {
+            if (item.type === "armour" && item?.system?.equippable?.equipped) {
+              const equippedEncumbrance = +item.system.encumbrance.adjusted - 3;
+              encum += equippedEncumbrance > 0 ? equippedEncumbrance : 0;
+            } else if (item.type === "armour" || item.type === "weapon" || item.type === "shipweapon") {
+              let count = 0;
+              if (item.system?.quantity?.value) {
+                count = item.system.quantity.value;
+              }
+              encum += ((item.system?.encumbrance?.adjusted !== undefined) ? item.system?.encumbrance?.adjusted : item.system?.encumbrance?.value) * count;
+            } else {
+              let count = 0;
+              if (item.system?.quantity?.value) {
+                count = item.system.quantity.value;
+              }
+              encum += item.system?.encumbrance?.value * count;
             }
-            encum += ((item.system?.encumbrance?.adjusted !== undefined) ? item.system?.encumbrance?.adjusted : item.system?.encumbrance?.value) * count;
-          } else {
-            let count = 0;
-            if (item.system?.quantity?.value) {
-              count = item.system.quantity.value;
-            }
-            encum += item.system?.encumbrance?.value * count;
           }
+        } catch (err) {
+          CONFIG.logger.error(`Error calculating derived Encumbrance`, err);
         }
-      } catch (err) {
-        CONFIG.logger.error(`Error calculating derived Encumbrance`, err);
-      }
-    });
-
+      });
     // Set Encumbrance value on character.
     data.stats.encumbrance.value = encum;
+    }
   }
 
   /**
