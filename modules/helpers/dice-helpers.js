@@ -4,7 +4,7 @@ import ModifierHelpers from "../helpers/modifiers.js";
 import ImportHelpers from "../importer/import-helpers.js";
 
 export default class DiceHelpers {
-  static async rollSkill(obj, event, type, flavorText, sound) {
+  static async rollSkill(obj, event, type, flavorText, sound, proxyData) {
     const data = obj.getData();
     const row = event.target.parentElement.parentElement;
     let skillName = row.parentElement.dataset["ability"];
@@ -48,11 +48,13 @@ export default class DiceHelpers {
       value: 0,
     };
 
-    if (data?.data?.skills?.[skillName]) {
-      skill = data.data.skills[skillName];
+    let actorData = proxyData || data?.data;
+
+    if (actorData?.skills?.[skillName]) {
+      skill = actorData.skills[skillName];
     }
-    if (data?.data?.characteristics?.[skill?.characteristic]) {
-      characteristic = data.data.characteristics[skill.characteristic];
+    if (actorData?.characteristics?.[skill?.characteristic]) {
+      characteristic = actorData.characteristics[skill.characteristic];
     }
 
     const actor = await game.actors.get(data.actor._id);
