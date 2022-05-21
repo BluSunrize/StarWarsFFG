@@ -1800,6 +1800,36 @@ img {
 .starwarsffg.sheet.item.v2 .item-sheet-gear .sheet-body {
   height: calc(100% - 17.3125rem);
 }
+.starwarsffg .item-sheet-cybernetic .charname input {
+  color: #37650c;
+}
+.starwarsffg .item-sheet-cybernetic .characteristic-item .characteristic-label {
+  background-color: #37650c;
+}
+.starwarsffg .item-sheet-cybernetic .characteristic-item .characteristic {
+  border: 5px double #37650c;
+}
+.starwarsffg .item-sheet-cybernetic .block-background {
+  background-color: #4bc755;
+}
+.starwarsffg .item-sheet-cybernetic .attribute .block-title {
+  background-color: #37650c;
+}
+.starwarsffg .item-sheet-cybernetic .sheet-body {
+  height: calc(100% - 21.3125rem);
+  overflow: auto;
+}
+.starwarsffg.sheet.item.v2 .item-sheet-cybernetic .container.flex-group-center {
+  padding: 0 5px 0 5px;
+  margin-bottom: 0;
+}
+.starwarsffg.sheet.item.v2 .item-sheet-cybernetic .weapon-values {
+  margin: 0 5px;
+  padding: 0 5px 0 5px;
+}
+.starwarsffg.sheet.item.v2 .item-sheet-cybernetic .sheet-body {
+  height: calc(100% - 17.3125rem);
+}
 .starwarsffg .item-sheet-talent .charname input {
   color: #821517;
 }

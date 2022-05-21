@@ -570,6 +570,9 @@ export class ActorSheetFFG extends ActorSheet {
         case "shipweapon":
           itemType = game.i18n.localize("ITEM.TypeShipweapon");
           break;
+        case "cybernetic":
+          itemType = game.i18n.localize("ITEM.TypeCybernetic");
+          break;
 
         default:
           itemType = game.i18n.localize("ITEM.TypeGear");

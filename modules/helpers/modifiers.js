@@ -43,7 +43,7 @@ export default class ModifierHelpers {
             .filter((id) => (item.system.attributes[id].mod === key || item.system.attributes[id].mod === "*") && item.system.attributes[id].modtype === modtype)
             .map((i) => item.system.attributes[i]);
 
-          if (item.type === "armour" || item.type === "weapon") {
+          if (item.type === "armour" || item.type === "weapon" || item.type === "cybernetic") {
             if (item?.system?.equippable?.equipped) {
               if (key === "Soak" && item.system?.soak) {
                 sources.push({ modtype, key, name: item.name, value: item.system.soak.adjusted, type: item.type });

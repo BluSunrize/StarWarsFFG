@@ -1,0 +1,57 @@
+.item-sheet-cybernetic {
+  $swffg-cybernetic-color: rgb(55, 101, 12);
+  $swffg-cybernetic-color-light: rgb(75, 199, 85);
+
+  .charname {
+    input {
+      color: $swffg-cybernetic-color
+    }
+  }
+
+  .characteristic-item {
+    .characteristic-label {
+      background-color: $swffg-cybernetic-color
+    }
+
+    .characteristic {
+      border: 5px double $swffg-cybernetic-color
+    }
+  }
+
+  .block-background {
+    background-color: $swffg-cybernetic-color-light;
+  }
+
+  .attribute {
+    .block-title {
+      background-color: $swffg-cybernetic-color;
+    }
+  }
+
+  .sheet-body {
+    height: calc(100% - 21.3125rem);
+    overflow:auto;
+  }
+}
+
+&.sheet {
+  &.item {
+    &.v2 {
+      .item-sheet-cybernetic {
+        .container.flex-group-center {
+          padding: 0 5px 0 5px;
+          margin-bottom: 0;
+        }
+         
+        .weapon-values {
+          margin: 0 5px;
+          padding: 0 5px 0 5px;
+        }
+
+        .sheet-body {
+          height: calc(100% - 17.3125rem);
+        }
+      }
+    }
+  }
+}

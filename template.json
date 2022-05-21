@@ -551,7 +551,7 @@
   },
   "Item": {
     "types": [
-      "ability", "armour", "career", "criticaldamage", "criticalinjury", "forcepower", "gear", "itemattachment", "itemmodifier", "talent", "shipattachment", "shipweapon", "homesteadupgrade", "signatureability", "specialization", "species", "weapon"],
+      "ability", "armour", "career", "cybernetic", "criticaldamage", "criticalinjury", "forcepower", "gear", "itemattachment", "itemmodifier", "talent", "shipattachment", "shipweapon", "homesteadupgrade", "signatureability", "specialization", "species", "weapon"],
     "templates": {
       "core": {
         "description": "",
@@ -665,6 +665,9 @@
         "label": "Soak",
         "adjusted": 0
       }
+    },
+    "cybernetic": {
+      "templates": ["core", "basic", "equippable", "itemattachments", "qualities"]
     },
     "talent": {
       "templates": ["core"],
