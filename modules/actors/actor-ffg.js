@@ -337,7 +337,13 @@ export class ActorFFG extends Actor {
               if (item.system?.quantity?.value) {
                 count = item.system.quantity.value;
               }
-              encum += item.system?.encumbrance?.value * count;
+              let baseEncum = item.system?.encumbrance?.value;
+              let stacksize = item.system?.stacksize?.value;
+              // items with 0 encumbrance can stack up to their stacksize per 1 encumbrance
+              if (baseEncum === 0 && stacksize > 1)
+                encum += Math.ceil(count/stacksize);
+              else
+                encum += baseEncum * count;
             }
           }
         } catch (err) {

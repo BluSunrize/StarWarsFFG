@@ -571,6 +571,12 @@
           "abrev": "Encum",
           "adjusted": 0
         },
+        "stacksize": {
+          "value": 0,
+          "type": "Number",
+          "label": "Stacksize",
+          "abrev": "Stack"
+        },
         "price": {
           "value": 0,
           "type": "Number",
