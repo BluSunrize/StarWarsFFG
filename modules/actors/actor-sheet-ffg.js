@@ -1292,11 +1292,15 @@ export class ActorSheetFFG extends ActorSheet {
 
     if (data.data) {
       let sameActor = data.actorId === this.actor.id;
-      if (!sameActor) {
+      let isDuplicating = event.ctrlKey;
+      if (!sameActor || isDuplicating) {
         try {
           this.actor.createEmbeddedDocuments("Item", [duplicate(data.data)]); // Create a new Item
-          const actor = game.actors.get(data.actorId);
-          await actor.items.get(data.data._id)?.delete(); // Delete originating item from other actor
+          if (!isDuplicating) {
+            // Delete original item, unless ctrl was used to duplicate it
+            const actor = game.actors.get(data.actorId);
+            await actor.items.get(data.data._id)?.delete(); // Delete originating item from other actor
+          }
         } catch (err) {
           CONFIG.logger.error(`Error transfering item between actors.`, err);
         }
