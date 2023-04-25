@@ -56,6 +56,12 @@ export class AdversarySheetFFG extends ActorSheetFFG {
 
     if (this.actor.type === "character") {
       this.sheetoptions.clear();
+      this.sheetoptions.register("enableStrainThreshold", {
+        name: game.i18n.localize("SWFFG.EnableStrainThreshold"),
+        hint: game.i18n.localize("SWFFG.EnableStrainThresholdHint"),
+        type: "Boolean",
+        default: true,
+      });
       this.sheetoptions.register("enableAutoSoakCalculation", {
         name: game.i18n.localize("SWFFG.EnableSoakCalc"),
         hint: game.i18n.localize("SWFFG.EnableSoakCalcHint"),
