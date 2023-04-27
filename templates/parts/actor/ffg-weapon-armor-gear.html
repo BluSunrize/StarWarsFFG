@@ -6,6 +6,7 @@
     <div class="">{{localize "SWFFG.ItemsDamage"}}</div>
     <div class="">{{localize "SWFFG.ItemsRange"}}</div>
     <div class="">{{localize "SWFFG.ItemsCrit"}}</div>
+    <div class="">{{localize "SWFFG.ItemsQuantity"}}</div>
     <!-- <div class="">{{localize "SWFFG.ItemsEncum"}}</div> -->
     <!-- <div class="">{{localize "SWFFG.ItemsSpecial"}}</div> -->
     <div class="item-add weapon"><i class="far fa-plus-square"></i></div>
@@ -35,6 +36,11 @@
       <div>{{item.system.damage.value}} {{#if (and (ne item.system.damage.value item.system.damage.adjusted) (or (gt item.system.damage.adjusted.length 0) (gt item.system.damage.adjusted 0)))}}({{item.system.damage.adjusted}}){{/if}}</div>
       <div>{{localize item.system.range.label}}</div>
       <div>{{item.system.crit.value}} {{#if (and (ne item.system.crit.value item.system.crit.adjusted) (or (gt item.system.crit.adjusted.length 0) (gt item.system.crit.adjusted 0)))}}({{item.system.crit.adjusted}}){{/if}}</div>
+      <div class="item-quantity">
+        <div class="quantity increase"><i class="far fa-plus-square"></i></div>
+        {{item.system.quantity.value}}
+        <div class="quantity decrease"><i class="far fa-minus-square"></i></div>
+      </div>
       <div class="item-controls">
         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
         <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
