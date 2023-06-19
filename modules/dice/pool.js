@@ -192,8 +192,10 @@ export class DicePoolFFG {
     this._addIcons(container, CONFIG.FFG.CHALLENGE_ICON, this.challenge, height, width);
     this._addIcons(container, CONFIG.FFG.DIFFICULTY_ICON, this.difficulty, height, width);
     this._addIcons(container, CONFIG.FFG.BOOST_ICON, this.boost, height, width);
-    this._addIcons(container, CONFIG.FFG.SETBACK_ICON, this.setback, height, width);
-    this._addIcons(container, CONFIG.FFG.REMOVESETBACK_ICON, this.remsetback, height, width);
+    if (this.setback > 0)
+      this._addIcons(container, CONFIG.FFG.SETBACK_ICON, this.setback, height, width);
+    else
+      this._addIcons(container, CONFIG.FFG.REMOVESETBACK_ICON, -this.setback, height, width);
     this._addIcons(container, CONFIG.FFG.FORCE_ICON, this.force, height, width);
 
     this._addSourceToolTip(container);

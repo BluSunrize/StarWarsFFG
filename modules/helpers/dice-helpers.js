@@ -79,7 +79,7 @@ export default class DiceHelpers {
     let dicePool = new DicePoolFFG({
       ability: Math.max(characteristic.value, skill.rank),
       boost: skill.boost,
-      setback: skill.setback + status.setback,
+      setback: skill.setback + status.setback - skill.remsetback,
       force: skill.force,
       advantage: skill.advantage,
       dark: skill.dark,
@@ -119,8 +119,7 @@ export default class DiceHelpers {
       const dicePool = new DicePoolFFG({
         ability: Math.max(characteristic?.value ? characteristic.value : 0, skill?.rank ? skill.rank : 0),
         boost: skill.boost,
-        setback: skill.setback,
-        remsetback: skill.remsetback,
+        setback: skill.setback - skill.remsetback,
         force: skill.force,
         advantage: skill.advantage,
         dark: skill.dark,
