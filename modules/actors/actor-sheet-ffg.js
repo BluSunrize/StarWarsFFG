@@ -2,6 +2,7 @@
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
+import ActiveEffectFFG from "../helpers/effects.js";
 import PopoutEditor from "../popout-editor.js";
 import DiceHelpers from "../helpers/dice-helpers.js";
 import ActorOptions from "./actor-ffg-options.js";
@@ -59,6 +60,7 @@ export class ActorSheetFFG extends ActorSheet {
     data.data = actorData.system;
     data.talentList = this.actor.talentList;
     data.rollData = this.actor.getRollData.bind(this.actor);
+    data.effects = ActiveEffectFFG.prepareActiveEffectCategories(this.actor.effects),
 
     data.token = this.token;
     data.items = this.actor.items;
@@ -886,6 +888,9 @@ export class ActorSheetFFG extends ActorSheet {
         $(a).val("2");
       }
     });
+
+    // Active Effects management
+    html.find(".effect-control").click(ev => ActiveEffectFFG.onManageActiveEffect(ev, this.actor));
 
     html.find(".add-obligation").on("click", async (event) => {
       event.preventDefault();

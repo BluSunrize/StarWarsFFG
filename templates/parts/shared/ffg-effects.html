@@ -1,0 +1,53 @@
+<ol class="items effects-list">
+  {{#each effects as |section sid|}}
+  {{#unless section.hidden}}
+  <li class="items-header flexrow" data-effect-type="{{section.type}}">
+    <div class="header-name">{{localize section.label}}</div>
+    <div class="effect-source">{{localize "SWFFG.Source"}}</div>
+    <div class="effect-duration">{{localize "SWFFG.Duration"}}</div>
+    <div class="item-controls effect-controls flexrow">
+      {{#if @root.editable}}
+      <a class="effect-control" data-action="create" data-tooltip="SWFFG.Effect.Create">
+        <i class="fas fa-plus"></i> {{localize "SWFFG.Add"}}
+      </a>
+      {{/if}}
+    </div>
+  </li>
+
+  {{#if section.info}}
+  <ol class="info">
+    {{#each section.info}}
+    <li class="notification info">{{this}}</li>
+    {{/each}}
+  </ol>
+  {{/if}}
+
+  <ol class="items-list">
+    {{#each section.effects as |effect|}}
+    <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+      <div class="item-name effect-name flexrow">
+        <div class="item-rollable" style="background-image: url('{{effect.icon}}')"></div>
+        <div class="hover">{{effect.label}}</div>
+      </div>
+      <div class="effect-source">{{effect.sourceName}}</div>
+      <div class="effect-duration">{{effect.duration.label}}</div>
+      <div class="item-controls effect-controls flexrow">
+        {{#if @root.editable}}
+        <a class="effect-control" data-action="toggle"
+          data-tooltip="{{#if effect.disabled}}SWFFG.Effect.Enable{{else}}SWFFG.Effect.Disable{{/if}}">
+          <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+        </a>
+        <a class="effect-control" data-action="edit" data-tooltip="SWFFG.Effect.Edit">
+          <i class="fas fa-edit"></i>
+        </a>
+        <a class="effect-control" data-action="delete" data-tooltip="SWFFG.Effect.Delete">
+          <i class="fas fa-trash"></i>
+        </a>
+        {{/if}}
+      </div>
+    </li>
+    {{/each}}
+  </ol>
+  {{/unless}}
+  {{/each}}
+</ol>
