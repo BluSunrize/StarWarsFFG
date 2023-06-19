@@ -76,25 +76,7 @@ export default class DiceHelpers {
 
     // TODO: Get weapon specific modifiers from itemmodifiers and itemattachments
 
-    let dicePool = new DicePoolFFG({
-      ability: Math.max(characteristic.value, skill.rank),
-      boost: skill.boost,
-      setback: skill.setback + status.setback - skill.remsetback,
-      force: skill.force,
-      advantage: skill.advantage,
-      dark: skill.dark,
-      light: skill.light,
-      failure: skill.failure,
-      threat: skill.threat,
-      success: skill.success,
-      triumph: skill.triumph,
-      despair: skill.despair,
-      upgrades: skill.upgrades,
-      difficulty: 2 + status.difficulty, // default to average difficulty
-    });
-
-    dicePool.upgrade(Math.min(characteristic.value, skill.rank) + dicePool.upgrades);
-
+    let dicePool = this.poolFromSkill(characteristic, skill, status);
     if (type === "ability") {
       dicePool.upgrade();
     } else if (type === "difficulty") {
@@ -116,20 +98,8 @@ export default class DiceHelpers {
       const skill = data.data.skills[skillName];
       const characteristic = data.data.characteristics[skill.characteristic];
 
-      const dicePool = new DicePoolFFG({
-        ability: Math.max(characteristic?.value ? characteristic.value : 0, skill?.rank ? skill.rank : 0),
-        boost: skill.boost,
-        setback: skill.setback - skill.remsetback,
-        force: skill.force,
-        advantage: skill.advantage,
-        dark: skill.dark,
-        light: skill.light,
-        failure: skill.failure,
-        threat: skill.threat,
-        success: skill.success,
-        triumph: skill?.triumph ? skill.triumph : 0,
-        despair: skill?.despair ? skill.despair : 0,
-        upgrades: skill?.upgrades ? skill.upgrades : 0,
+      const dicePool = this.poolFromSkill(characteristic, skill, {
+        difficulty: -2,
         source: {
           skill: skill?.ranksource?.length ? skill.ranksource : [],
           boost: skill?.boostsource?.length ? skill.boostsource : [],
@@ -141,10 +111,9 @@ export default class DiceHelpers {
           failure: skill?.failuresource?.length ? skill.failuresource : [],
           threat: skill?.threatsource?.length ? skill.threatsource : [],
           success: skill?.successsource?.length ? skill.successsource : [],
-          upgrades: skill?.upgradessource?.length ? skill.upgradessource: [],
+          upgrades: skill?.upgradessource?.length ? skill.upgradessource : [],
         },
       });
-      dicePool.upgrade(Math.min(characteristic.value, skill.rank) + dicePool.upgrades);
 
       const rollButton = elem.querySelector(".roll-button");
       dicePool.renderPreview(rollButton);
@@ -164,28 +133,34 @@ export default class DiceHelpers {
     const skill = actor.system.skills[itemData.skill.value];
     const characteristic = actor.system.characteristics[skill.characteristic];
 
-    let dicePool = new DicePoolFFG({
-      ability: Math.max(characteristic.value, skill.rank),
-      boost: skill.boost,
-      setback: skill.setback + status.setback - skill.remsetback,
-      force: skill.force,
-      advantage: skill.advantage,
-      dark: skill.dark,
-      light: skill.light,
-      failure: skill.failure,
-      threat: skill.threat,
-      success: skill.success,
-      triumph: skill?.triumph ? skill.triumph : 0,
-      despair: skill?.despair ? skill.despair : 0,
-      upgrades: skill?.upgrades ? skill.upgrades : 0,
-      difficulty: 2 + status.difficulty, // default to average difficulty
-    });
-
-    dicePool.upgrade(Math.min(characteristic.value, skill.rank) + dicePool.upgrades);
-
-    dicePool = new DicePoolFFG(await this.getModifiers(dicePool, item));
+    let dicePool = new DicePoolFFG(await this.getModifiers(
+      this.poolFromSkill(characteristic, skill, status),
+      item
+    ));
 
     this.displayRollDialog(actorSheet, dicePool, `${game.i18n.localize("SWFFG.Rolling")} ${skill.label}`, skill.label, item, flavorText, sound);
+  }
+
+  static poolFromSkill(characteristic, skill, extras) {
+    let dicePool = new DicePoolFFG({
+      ability: Math.max(characteristic.value, skill.rank) + (extras?.ability || 0),
+      boost: skill.boost + (extras?.boost || 0),
+      setback: skill.setback - skill.remsetback + (extras?.setback || 0) - (extras?.remsetback || 0),
+      force: skill.force + (extras?.force || 0),
+      advantage: skill.advantage + (extras?.advantage || 0),
+      dark: skill.dark + (extras?.dark || 0),
+      light: skill.light + (extras?.light || 0),
+      failure: skill.failure + (extras?.failure || 0),
+      threat: skill.threat + (extras?.threat || 0),
+      success: skill.success + (extras?.success || 0),
+      triumph: (skill.triumph || 0) + (extras?.triumph || 0),
+      despair: (skill.despair || 0) + (extras?.despair || 0),
+      upgrades: (skill.upgrades || 0) + (extras?.upgrades || 0),
+      difficulty: 2 + (extras?.difficulty || 0), // default to average difficulty
+      source: extras?.source,
+    });
+    dicePool.upgrade(Math.min(characteristic.value, skill.rank) + dicePool.upgrades);
+    return dicePool;
   }
 
   // Takes a skill object, characteristic object, difficulty number and ActorSheetFFG.getData() object and creates the appropriate roll dialog.
