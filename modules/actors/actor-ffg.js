@@ -74,14 +74,7 @@ export class ActorFFG extends Actor {
       }
     }
 
-    if (actorData.type === "minion" || actorData.type === "character") {
-      this._applyModifiers.bind(this);
-      this._applyModifiers(actorData);
-      this._calculateDerivedValues(actorData);
-    } else if (actorData.type === "vehicle") {
-      this._applyVehicleModifiers(actorData);
-      this._calculateDerivedValues(actorData);
-    }
+    this._calculateDerivedValues(actorData);
   }
 
   /**
@@ -503,6 +496,23 @@ export class ActorFFG extends Actor {
         mod: key,
       };
     });
+  }
+
+  /**
+   * @override
+   * Apply any transformations to the Actor data which are caused by ActiveEffects.
+   */
+  applyActiveEffects() {
+    //apply all the custom modifiers first
+    if (this.type === "minion" || this.type === "character") {
+      this._applyModifiers.bind(this);
+      this._applyModifiers(this);
+    } else if (this.type === "vehicle") {
+      this._applyVehicleModifiers.bind(this);
+      this._applyVehicleModifiers(this);
+    }
+    // then apply active effects
+    super.applyActiveEffects();
   }
 
   /**

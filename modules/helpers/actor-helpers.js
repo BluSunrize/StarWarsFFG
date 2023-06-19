@@ -3,6 +3,7 @@ import ModifierHelpers from "./modifiers.js";
 export default class ActorHelpers {
   static updateActor(event, formData) {
     formData = expandObject(formData);
+    const actor = this.actor;
     const ownedItems = this.actor.items;
 
     // as of Foundry v10, saving an editor only submits the single entry for that editor
@@ -24,47 +25,28 @@ export default class ActorHelpers {
           Object.keys(CONFIG.FFG.character_stats).forEach((k) => {
             const key = CONFIG.FFG.character_stats[k].value;
 
-            let total = ModifierHelpers.getCalculateValueForAttribute(key, this.actor.system.attributes, ownedItems, "Stat");
-
-            let statValue = 0;
-            let isFormValueVisible = true;
+            let diff = 0;
             if (key === "Soak") {
               if (formData.data.stats[k]?.value) {
-                statValue = parseInt(formData.data.stats[k].value, 10);
-                // the soak value is autocalculated we need to account for Brawn
-                statValue = statValue - parseInt(formData.data.characteristics.Brawn.value, 10);
-              } else {
-                statValue = 0;
-                isFormValueVisible = false;
+                diff = parseInt(formData.data.stats[k].value, 10) - actor.system.stats[k].value;
               }
             } else if (key === "Encumbrance") {
               if (formData.data.stats[k]?.max) {
-                statValue = parseInt(formData.data.stats[k].max, 10);
-                // the encumbrance value is autocalculated we need to account for 5 + Brawn
-                statValue = statValue - parseInt(formData.data.characteristics.Brawn.value + 5, 10);
-              } else {
-                statValue = 0;
-                isFormValueVisible = false;
+                diff = parseInt(formData.data.stats[k].max, 10) - actor.system.stats[k].max;
               }
             } else if (key === "Defence-Melee") {
-              statValue = parseInt(formData.data.stats.defence.melee, 10);
+              diff = parseInt(formData.data.stats.defence.melee, 10) - actor.system.stats.defence.melee;
             } else if (key === "Defence-Ranged") {
-              statValue = parseInt(formData.data.stats.defence.ranged, 10);
+              diff = parseInt(formData.data.stats.defence.ranged, 10) - actor.system.stats.defence.ranged;
             } else {
               if (formData.data?.stats[k]?.max) {
-                statValue = parseInt(formData.data.stats[k].max, 10);
-              } else {
-                statValue = 0;
-                isFormValueVisible = false;
+                diff = parseInt(formData.data.stats[k].max, 10) - actor.system.stats[k].max;
               }
             }
 
-            let x = statValue - (isFormValueVisible ? total : 0);
-
-            let y = parseInt(formData.data.attributes[key].value, 10) + x;
+            let y = parseInt(formData.data.attributes[key].value, 10) + diff;
             if (key === "Soak") {
               const autoSoakCalculation = (typeof this.actor.flags?.starwarsffg?.config?.enableAutoSoakCalculation === "undefined" && game.settings.get("starwarsffg", "enableSoakCalc")) || this.actor.flags.starwarsffg?.config.enableAutoSoakCalculation;
-
               if (autoSoakCalculation) {
                 y = 0;
               }
