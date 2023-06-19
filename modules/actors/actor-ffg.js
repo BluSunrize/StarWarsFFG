@@ -74,7 +74,9 @@ export class ActorFFG extends Actor {
       }
     }
 
-    this._calculateDerivedValues(actorData);
+    if(actorData.type === 'minion' || actorData.type === 'character' || actorData.type === 'vehicle') {
+      this._calculateDerivedValues(actorData);
+    }
   }
 
   /**
