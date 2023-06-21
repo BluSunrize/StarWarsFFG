@@ -77,6 +77,9 @@ export default class DiceHelpers {
     const actorDiceMod = actor.system.temporary_dice || {};
     for(let key in actorDiceMod)
       status[key] = (status[key]||0) + (actorDiceMod[key]||0);
+    const actorSkillMod = actorDiceMod[skill.value] || actorDiceMod[skill.value.toLocaleLowerCase()] || {};
+    for(let key in actorSkillMod)
+      status[key] = (status[key]||0) + (actorSkillMod[key]||0);
 
     // TODO: Get weapon specific modifiers from itemmodifiers and itemattachments
 
@@ -137,6 +140,9 @@ export default class DiceHelpers {
     const actorDiceMod = actor.system.temporary_dice || {};
     for(let key in actorDiceMod)
       status[key] = (status[key]||0) + (actorDiceMod[key]||0);
+    const actorSkillMod = actorDiceMod[skill.value] || actorDiceMod[skill.value.toLocaleLowerCase()] || {};
+    for(let key in actorSkillMod)
+      status[key] = (status[key]||0) + (actorSkillMod[key]||0);
 
     const skill = actor.system.skills[itemData.skill.value];
     const characteristic = actor.system.characteristics[skill.characteristic];
