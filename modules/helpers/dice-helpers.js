@@ -73,6 +73,10 @@ export default class DiceHelpers {
     }
     const itemData = item || {};
     const status = this.getWeaponStatus(itemData);
+    // Add additional modifiers from active effects
+    const actorDiceMod = actor.system.temporary_dice || {};
+    for(let key in actorDiceMod)
+      status[key] = (status[key]||0) + (actorDiceMod[key]||0);
 
     // TODO: Get weapon specific modifiers from itemmodifiers and itemattachments
 
@@ -129,6 +133,10 @@ export default class DiceHelpers {
     await item.setFlag("starwarsffg", "uuid", item.uuid);
 
     const status = this.getWeaponStatus(item);
+    // Add additional modifiers from active effects
+    const actorDiceMod = actor.system.temporary_dice || {};
+    for(let key in actorDiceMod)
+      status[key] = (status[key]||0) + (actorDiceMod[key]||0);
 
     const skill = actor.system.skills[itemData.skill.value];
     const characteristic = actor.system.characteristics[skill.characteristic];
@@ -160,6 +168,7 @@ export default class DiceHelpers {
       source: extras?.source,
     });
     dicePool.upgrade(Math.min(characteristic.value, skill.rank) + dicePool.upgrades);
+    dicePool.upgradeDifficulty(extras?.upgradeDifficulty || 0);
     return dicePool;
   }
 
