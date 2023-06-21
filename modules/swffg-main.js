@@ -29,6 +29,7 @@ import DestinyTracker from "./ffg-destiny-tracker.js";
 import { defaultSkillList } from "./config/ffg-skillslist.js";
 import SettingsHelpers from "./settings/settings-helpers.js";
 import {register_crew} from "./helpers/crew.js";
+import ActiveEffectFFG from "./helpers/effects.js";
 
 // Import Dice Types
 import { AbilityDie, BoostDie, ChallengeDie, DifficultyDie, ForceDie, ProficiencyDie, SetbackDie } from "./dice-pool-ffg.js";
@@ -483,6 +484,25 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
   }
 });
 
+// Decrement duration of active effects
+Hooks.on("preCreateChatMessage", async (msg, data, options, userid) => {
+  const diceroll = msg.rolls[0] ?? {};
+  const actor = game.actors.get(msg.speaker?.actor);
+  if (diceroll.hasFFG && actor)
+    for (let effect of actor.effects) {
+      let duration_checks = effect.flags[CONFIG.module]?.duration_checks;
+      if (duration_checks && duration_checks >= 1) {
+        if (--duration_checks <= 0)
+          await actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id]);
+        else {
+          const updateData = { flags: {} };
+          updateData.flags[CONFIG.module] = { duration_checks: duration_checks };
+          await effect.update(updateData);
+        }
+      }
+    }
+});
+
 // Update chat messages with dice images
 Hooks.on("renderChatMessage", (app, html, messageData) => {
   const content = html.find(".message-content");
@@ -554,6 +574,12 @@ Hooks.on("renderJournalPageSheet", (...args) => {
     );
   }
   return args;
+});
+
+// Handle Active Effect sheet extension
+Hooks.on("renderActiveEffectConfig", (sheet, html) => {
+  console.log('render effect', sheet);
+  ActiveEffectFFG.extendEffectSheet(sheet, html);
 });
 
 // Handle crew registration

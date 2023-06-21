@@ -68,4 +68,20 @@ export default class ActiveEffectFFG extends ActiveEffect {
         }
         return categories;
     }
+
+    static extendEffectSheet(sheet, html) {
+        const flags = sheet.object.flags ?? {};
+        const duration_checks = flags[CONFIG.module]?.duration_checks;
+        const contents = `
+          <hr>
+          <div class="form-group">
+            <label>Effect Duration (Skillchecks)</label>
+            <div class="form-fields">
+                <input type="number" name="flags.${CONFIG.module}.duration_checks" value="${duration_checks}">
+            </div>
+          </div>`;
+        html.find('section[data-tab="duration"] div.form-group').last().after(contents);
+        if (sheet._tabs[0]?.active == 'duration')
+            html.css({ height: "auto" });
+    }
 }
