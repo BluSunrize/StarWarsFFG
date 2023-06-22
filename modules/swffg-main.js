@@ -7,7 +7,7 @@
 // Import Modules
 import { FFG } from "./swffg-config.js";
 import { ActorFFG } from "./actors/actor-ffg.js";
-import { CombatFFG } from "./combat-ffg.js";
+import { CombatFFG, CombatantFFG, CombatTrackerFFG } from "./combat-ffg.js";
 import { ItemFFG } from "./items/item-ffg.js";
 import { ItemSheetFFG } from "./items/item-sheet-ffg.js";
 import { ItemSheetFFGV2 } from "./items/item-sheet-ffg-v2.js";
@@ -61,6 +61,8 @@ Hooks.once("init", async function () {
     ActorFFG,
     ItemFFG,
     CombatFFG,
+    CombatantFFG,
+    CombatTrackerFFG,
     RollFFG,
     DiceHelpers,
     RollBuilderFFG,
@@ -79,6 +81,7 @@ Hooks.once("init", async function () {
   CONFIG.Actor.documentClass = ActorFFG;
   CONFIG.Item.documentClass = ItemFFG;
   CONFIG.Combat.documentClass = CombatFFG;
+  CONFIG.Combatant.documentClass = CombatantFFG;
 
   // Define custom Roll class
   CONFIG.Dice.rolls.push(CONFIG.Dice.rolls[0]);
@@ -100,6 +103,7 @@ Hooks.once("init", async function () {
   CONFIG.debug.hooks = false;
 
   CONFIG.ui.pause = PauseFFG;
+  CONFIG.ui.combat = CombatTrackerFFG;
 
   // Override the default Token _drawBar function to allow for FFG style wound and strain values.
   Token.prototype._drawBar = function (number, bar, data) {

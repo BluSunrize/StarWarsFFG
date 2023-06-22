@@ -2883,3 +2883,11 @@ img {
   background-color: #b8383b;
   color: white;
 }
+
+/** Combat Tracker */
+ol.combatant-choice {
+  flex-basis: 100%;
+}
+li.combatant-choice-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
