@@ -339,13 +339,22 @@ export class CombatTrackerFFG extends CombatTracker {
 
   _getSlotData(disposition) {
     if (disposition === 1) {
-      return { img: "systems/starwarsffg/images/dice/starwars/lightside.png", name: "Friendly" };
+      return {
+        img: game.settings.get("starwarsffg", "ui-combatSlotFriendly"),
+        name: game.i18n.localize("SWFFG.CombatSlotFriendly"),
+      };
     }
     else if (disposition === 0) {
-      return { img: "systems/starwarsffg/images/mod-all.png", name: "Neutral" };
+      return {
+        img: game.settings.get("starwarsffg", "ui-combatSlotNeutral"),
+        name: game.i18n.localize("SWFFG.CombatSlotNeutral"),
+      };
     }
     else {
-      return { img: "systems/starwarsffg/images/dice/starwars/darkside.png", name: "Hostile" };
+      return {
+        img: game.settings.get("starwarsffg", "ui-combatSlotHostile"),
+        name: game.i18n.localize("SWFFG.CombatSlotHostile"),
+      };
     }
   }
 
@@ -450,7 +459,7 @@ export class CombatTrackerFFG extends CombatTracker {
   _getEntryContextOptions() {
     const m = [
       {
-        name: 'SWFFG.Combat.DupActivation',
+        name: 'SWFFG.CombatDupActivation',
         icon: '<i class="fas fa-clone"></i>',
         callback: (target) => {
           const combat = this.viewed;

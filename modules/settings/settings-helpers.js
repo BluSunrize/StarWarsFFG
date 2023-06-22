@@ -250,6 +250,42 @@ export default class SettingsHelpers {
       onChange: this.debouncedReload,
     });
 
+    game.settings.register("starwarsffg", "ui-combatSlotFriendly", {
+      module: "starwarsffg",
+      name: game.i18n.localize("SWFFG.SettingsCombatSlotFriendly"),
+      hint: game.i18n.localize("SWFFG.SettingsCombatSlotFriendlyHint"),
+      scope: "world",
+      config: false,
+      default: "systems/starwarsffg/images/dice/starwars/lightside.png",
+      type: String,
+      valueType: "FilePicker",
+      onChange: this.debouncedReload,
+    });
+
+    game.settings.register("starwarsffg", "ui-combatSlotNeutral", {
+      module: "starwarsffg",
+      name: game.i18n.localize("SWFFG.SettingsCombatSlotNeutral"),
+      hint: game.i18n.localize("SWFFG.SettingsCombatSlotNeutralHint"),
+      scope: "world",
+      config: false,
+      default: "systems/starwarsffg/images/mod-all.png",
+      type: String,
+      valueType: "FilePicker",
+      onChange: this.debouncedReload,
+    });
+
+    game.settings.register("starwarsffg", "ui-combatSlotHostile", {
+      module: "starwarsffg",
+      name: game.i18n.localize("SWFFG.SettingsCombatSlotHostile"),
+      hint: game.i18n.localize("SWFFG.SettingsCombatSlotHostileHint"),
+      scope: "world",
+      config: false,
+      default: "systems/starwarsffg/images/dice/starwars/darkside.png",
+      type: String,
+      valueType: "FilePicker",
+      onChange: this.debouncedReload,
+    });
+
     game.settings.register("starwarsffg", "destiny-pool-light", {
       name: game.i18n.localize("SWFFG.SettingsDestinyLight"),
       hint: game.i18n.localize("SWFFG.SettingsDestinyLightHint"),
