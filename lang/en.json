@@ -628,5 +628,11 @@
   "SWFFG.Effect.Enable": "Enable",
   "SWFFG.Effect.Disable": "Disable",
   "SWFFG.Effect.Edit": "Edit",
-  "SWFFG.Effect.Delete": "Delete"
+  "SWFFG.Effect.Delete": "Delete",
+  "SWFFG.Effect.DurationRounds": "Effect Duration (Rounds)",
+  "SWFFG.Effect.DurationChecks": "Effect Duration (Skillchecks)",
+  "SWFFG.Effect.TurnAnchor.Start": "Until the start of",
+  "SWFFG.Effect.TurnAnchor.End": "Until the end of",
+  "SWFFG.Effect.Check": "Check",
+  "SWFFG.Effect.Checks": "Checks"
 }

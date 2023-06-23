@@ -1,5 +1,6 @@
 import { DicePoolFFG, RollFFG } from "./dice-pool-ffg.js";
 import PopoutEditor from "./popout-editor.js";
+import ActiveEffectFFG from "./helpers/effects.js";
 
 /**
  * Extend the base Combat entity.
@@ -196,6 +197,18 @@ export class CombatFFG extends Combat {
     return await promise;
   }
 
+  /**
+   * @override
+   * Advance the combat to the next turn
+   * @returns {Promise<Combat>}
+   */
+  async nextTurn() {
+    const claimedId = this.turns[this.turn]?.getClaimedId();
+    const actor = this.combatants?.get(claimedId)?.actor;
+    if(actor)
+      ActiveEffectFFG.updateDurationsInCombat(actor, 'turn_end');
+    return super.nextTurn();
+  }
 
   /**
    * @override
@@ -253,6 +266,8 @@ function claimSlot(combat, slotId, claimerId) {
   // Claim slot with selected combatant, mark them as having acted, then close selection
   slot.claimSlot(claimer.id);
   claimer.markActed();
+  if(claimer.actor)
+    ActiveEffectFFG.updateDurationsInCombat(claimer.actor, 'turn_start');
 }
 
 Hooks.once("init", async function () {

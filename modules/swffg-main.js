@@ -63,6 +63,7 @@ Hooks.once("init", async function () {
     CombatFFG,
     CombatantFFG,
     CombatTrackerFFG,
+    ActiveEffectFFG,
     RollFFG,
     DiceHelpers,
     RollBuilderFFG,
@@ -82,6 +83,7 @@ Hooks.once("init", async function () {
   CONFIG.Item.documentClass = ItemFFG;
   CONFIG.Combat.documentClass = CombatFFG;
   CONFIG.Combatant.documentClass = CombatantFFG;
+  CONFIG.ActiveEffect.documentClass = ActiveEffectFFG;
 
   // Define custom Roll class
   CONFIG.Dice.rolls.push(CONFIG.Dice.rolls[0]);
@@ -494,14 +496,12 @@ Hooks.on("preCreateChatMessage", async (msg, data, options, userid) => {
   const actor = game.actors.get(msg.speaker?.actor);
   if (diceroll.hasFFG && actor)
     for (let effect of actor.effects) {
-      let duration_checks = effect.flags[CONFIG.module]?.duration_checks;
+      let duration_checks = effect.getFlag('starwarsffg', 'duration.checks');
       if (duration_checks && duration_checks >= 1) {
         if (--duration_checks <= 0)
           await actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id]);
         else {
-          const updateData = { flags: {} };
-          updateData.flags[CONFIG.module] = { duration_checks: duration_checks };
-          await effect.update(updateData);
+          await effect.setFlag('starwarsffg', 'duration.checks', duration_checks);
         }
       }
     }
@@ -582,7 +582,6 @@ Hooks.on("renderJournalPageSheet", (...args) => {
 
 // Handle Active Effect sheet extension
 Hooks.on("renderActiveEffectConfig", (sheet, html) => {
-  console.log('render effect', sheet);
   ActiveEffectFFG.extendEffectSheet(sheet, html);
 });
 

@@ -1549,7 +1549,7 @@ img {
 .starwarsffg .items .items-list .item-controls {
   z-index: 500;
   width: 20px;
-  text-align: end;
+  text-align: center;
   margin: auto;
 }
 .starwarsffg .items .items-list .item-controls .item-control {
