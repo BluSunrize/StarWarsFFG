@@ -2,23 +2,23 @@
 <div class="form-group">
   <label>{{ localize "SWFFG.Effect.DurationChecks" }}</label>
   <div class="form-fields">
-    <input type="number" name="flags.starwarsffg.duration.checks" value="{{ data.flags.starwarsffg.duration.checks }}">
+    <input type="number" name="flags.starwarsffg.duration.checks" value="{{ flags.starwarsffg.duration.checks }}">
   </div>
 </div>
 <hr>
 <div class="form-group">
   <label>{{ localize "SWFFG.Effect.DurationRounds" }}</label>
   <div class="form-fields">
-    <input type="number" name="duration.rounds" value="{{ data.duration.rounds }}">
+    <input type="number" name="duration.rounds" value="{{ duration.rounds }}">
   </div>
 </div>
 <div class="form-group">
   <label>{{ localize "EFFECT.DurationTurns" }}</label>
   <div class="form-fields">
-    <input type="number" name="duration.turns" value="{{ data.duration.turns }}">
+    <input type="number" name="duration.turns" value="{{ duration.turns }}">
     <select name="flags.starwarsffg.duration.turn_anchor">
-      <option value="turn_start">{{localize "SWFFG.Effect.TurnAnchor.Start"}}</option>
-      <option value="turn_end">{{localize "SWFFG.Effect.TurnAnchor.End"}}</option>
+      <option value="turn_start" {{#if (eq flags.starwarsffg.duration.turn_anchor "turn_start")}}selected{{/if}}>{{localize "SWFFG.Effect.TurnAnchor.Start"}}</option>
+      <option value="turn_end" {{#if (eq flags.starwarsffg.duration.turn_anchor "turn_end")}}selected{{/if}}>{{localize "SWFFG.Effect.TurnAnchor.End"}}</option>
     </select>
   </div>
 </div>
