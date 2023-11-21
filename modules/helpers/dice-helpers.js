@@ -74,7 +74,7 @@ export default class DiceHelpers {
     const itemData = item || {};
     const status = this.getWeaponStatus(itemData);
     // Add additional modifiers from active effects
-    const actorDiceMod = actor.system.temporary_dice || {};
+    const actorDiceMod = actorData?.temporary_dice || {};
     for(let key in actorDiceMod)
       status[key] = (status[key]||0) + (actorDiceMod[key]||0);
     const actorSkillMod = actorDiceMod[skill.value] || actorDiceMod[skill.value.toLocaleLowerCase()] || {};
