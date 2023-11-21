@@ -120,7 +120,7 @@ export default class ActiveEffectFFG extends ActiveEffect {
     static updateDurationsInCombat(actor, turn_event) {
         for (let effect of actor.effects) {
             const anchor = effect.getFlag('starwarsffg', 'duration.turn_anchor');
-            if (anchor === turn_event) {
+            if (effect.duration.turns > 0 && anchor === turn_event) {
                 const turnsRemaining = effect.duration.turns - 1;
                 if (turnsRemaining <= 0)
                     effect.delete();
