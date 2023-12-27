@@ -14,40 +14,40 @@ export default class ActiveEffectFFG extends ActiveEffect {
 
         // Duration in skillchecks
         if (Number.isNumeric(durFlags.checks)) {
-            return foundry.utils.mergeObject(d, {
+            return {
                 type: "checks",
                 duration: durFlags.checks,
                 remaining: durFlags.checks,
                 label: `${durFlags.checks} ${game.i18n.localize(durFlags.checks === 1 ? 'SWFFG.Effect.Check' : 'SWFFG.Effect.Check')}`
-            });
+            };
         }
         // Rounds
         if (d.rounds) {
-            return foundry.utils.mergeObject(d, {
+            return {
                 type: "rounds",
                 duration: d.rounds,
                 remaining: d.rounds,
                 label: `${d.rounds} ${game.i18n.localize(d.rounds === 1 ? 'COMBAT.Round' : 'COMBAT.Rounds')}`
-            });
+            };
         }
         // Turns
         if (d.turns) {
             const anchorText = durFlags.turn_anchor === 'turn_start' ? 'SWFFG.Effect.TurnAnchor.Start' : 'SWFFG.Effect.TurnAnchor.End';
-            return foundry.utils.mergeObject(d, {
+            return {
                 type: "turns",
                 duration: d.turns,
                 remaining: d.turns,
                 label: `${game.i18n.localize(anchorText)} ${d.turns} ${game.i18n.localize(d.turns === 1 ? 'COMBAT.Round' : 'COMBAT.Rounds')}`
-            });
+            };
         }
 
         // No duration
-        return foundry.utils.mergeObject(d, {
+        return {
             type: "none",
             duration: null,
             remaining: null,
             label: game.i18n.localize("None")
-        });
+        };
     }
 
     /**
