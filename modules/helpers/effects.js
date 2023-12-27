@@ -137,4 +137,82 @@ export default class ActiveEffectFFG extends ActiveEffect {
         if (sheet._tabs[0]?.active == 'duration')
             html.css({ height: 'auto' });
     }
+
+    static extendEffectRenderer() {
+        if (game.modules.get('lib-wrapper')?.active) {
+            // Override using libWrapper: https://github.com/ruipin/fvtt-lib-wrapper
+            libWrapper.register('starwarsffg', 'Token.prototype.drawEffects', async function (wrapped, ...args) {
+                await wrapped(...args);
+                ActiveEffectFFG.drawEffectCounters(this);
+            }, 'WRAPPER');
+            libWrapper.register('starwarsffg', 'Token.prototype._drawEffect', async function (wrapped, src, ...args) {
+                const icon = await wrapped(src, ...args);
+                if (icon) icon.name = src;
+                return icon;
+            }, 'WRAPPER');
+        } else {
+            // Manual override
+            const originalDrawEffects = Token.prototype.drawEffects;
+            Token.prototype.drawEffects = async function () {
+                await originalDrawEffects.apply(this, arguments);
+                ActiveEffectFFG.drawEffectCounters(this);
+            }
+
+            const originalDrawEffect = Token.prototype._drawEffect;
+            Token.prototype._drawEffect = async function (src) {
+                const icon = await originalDrawEffect.apply(this, arguments);
+                if (icon) icon.name = src;
+                return icon;
+            };
+        }
+    }
+
+    static drawEffectCounters(token) {
+        const actorEffects = token.actor?.effects || token.document.actorData?.effects;
+
+        // fetch container or create if not exists
+        token.effectDurations = token.children.find(c => c.name === "effectDurations");
+        if (!token.effectDurations) {
+            const container = new PIXI.Container();
+            container.name = "effectDurations";
+            token.effectDurations = token.addChild(container);
+        }
+        // remove previous entries
+        token.effectDurations.removeChildren().forEach(c => c.destroy());
+
+        // iterate all rendered effects, find the actor effects and add duration where necessary
+        token.effects?.children?.filter(effectRender => effectRender.isSprite && effectRender.name).forEach(function (effectRender) {
+            const effect = actorEffects.find(e => e.icon === effectRender.name);
+            if (effect && effect.duration?.duration > 0) 
+                token.effectDurations.addChild(ActiveEffectFFG.createEffectCounter(effect, effectRender));
+        });
+    }
+
+    static createEffectCounter(effect, effectIcon) {
+        const counterText = new PIXI.Text(effect.duration?.duration, ActiveEffectFFG.getScaledFont(effectIcon.height));
+        counterText.anchor.set(1); // Align to bottom right
+        const sizeRatio = effectIcon.height / 20;
+        counterText.x = effectIcon.x + effectIcon.width + 1 * sizeRatio;
+        counterText.y = effectIcon.y + effectIcon.height + 3 * sizeRatio;
+        counterText.resolution = Math.max(1, 1 / sizeRatio * 1.5);
+        return counterText;
+    }
+    
+    static effectDurationFont = function() {
+        const font = CONFIG.canvasTextStyle.clone();
+        font.fontSize = 16;
+        font.fill = '#fca300';
+        return font;
+    }(); 
+
+    static getScaledFont(iconHeight = 20) {
+        let font = ActiveEffectFFG.effectDurationFont;
+        if (iconHeight !== 20) {
+            font = font.clone();
+            font.fontSize = iconHeight / 20 * font.fontSize;
+        }
+        return font;
+    }
+
+    
 }

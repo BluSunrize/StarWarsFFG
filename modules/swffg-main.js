@@ -875,6 +875,10 @@ Hooks.once("ready", async () => {
   await registerCrewRoles();
 });
 
+Hooks.once('setup', () => {
+  ActiveEffectFFG.extendEffectRenderer();
+});
+
 Hooks.once("diceSoNiceReady", (dice3d) => {
   let dicetheme = game.settings.get("starwarsffg", "dicetheme");
   if (!dicetheme || dicetheme == "starwars") {
